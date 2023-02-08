@@ -29,7 +29,7 @@ if ($id !== false) {
         <nav>
             <h1><a href="/" >Sk8-Play</a></h1>
             <div>
-                <a href="./enviar-video.html">Add</a>
+                <a href="/novo-video">Add</a>
                 <a href="../pages/login.html">Sair</a>
             </div>
         </nav>
@@ -37,8 +37,8 @@ if ($id !== false) {
     </header>
     <!-- Formulario -->
     <main>
-
-        <form action="<?= $id === false ? '/novo-video.php' : '/editar-video.php?id=' . $id ?>" method="post">
+    
+        <form method="post">
             <h2>Envie um vídeo!</h2>
                 <div>
                     <label for="linkVideo">Link embed</label>

@@ -1,61 +1,19 @@
 <?php
 
-
-
-$dbPath = __DIR__ . '/banco.sqlite';
-$pdo = new PDO("sqlite:$dbPath");
-
-
-
-$videoList = $pdo->query('SELECT * FROM videos;')->fetchAll(\PDO::FETCH_ASSOC);
-
-
-
-
-?><!DOCTYPE html>
-<html lang="pt-br">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SK8-Play</title>
-</head>
-
-<body>
-    <!-- Cabecalho -->
-    <header>
-
-        <nav>
-            <h1><a href="/" >Sk8-Play</a></h1>
-
-            <div>
-                <a href="./pages/enviar-video.html" >Add</a>
-                <a href="./pages/login.html">Sair</a>
-            </div>
-        </nav>
-
-    </header>
-    <!-- videos -->
-    <ul alt="videos">
-
-        <?php foreach ($videoList as $video): ?>   
-                <li>
-                    <iframe width="100%" height="72%" src="<?= $video['linkVideo']; ?>"
-                        title="Video de skate" frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen></iframe>
-                    <div>
-                        
-                        <h3><?php echo $video['title']; ?></h3>
-                        <div>
-                            <a href="./formulario.php?id=<?= $video['id']; ?>">Editar</a>
-                            <a href="./remover-videos.php?id=<?= $video['id']; ?>">Excluir</a>
-                        </div>
-                    </div>
-                </li> 
-        <?php endforeach ?>
-    </ul>
-</body>
-
-</html>
+if (!array_key_exists('PATH_INFO', $_SERVER) || $_SERVER['PATH_INFO'] === '/') {
+    require_once 'listagem-videos.php';
+} elseif ($_SERVER['PATH_INFO'] === '/novo-video') {
+    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+        require_once 'formulario.php';
+    } elseif($_SERVER['REQUEST_METHOD'] === 'POST') {
+        require_once 'novo-video.php';
+    }
+} elseif ($_SERVER['PATH_INFO'] === '/editar-video') {
+    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+        require_once 'formulario.php';
+    } elseif($_SERVER['REQUEST_METHOD'] === 'POST') {
+        require_once 'editar-video.php';
+    }
+} elseif ($_SERVER['PATH_INFO'] === '/remover-videos') {
+    require_once 'remover-videos.php';
+}

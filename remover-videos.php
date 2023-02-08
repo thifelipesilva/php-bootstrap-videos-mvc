@@ -5,7 +5,7 @@ $pdo = new PDO("sqlite:$dbPath");
 
 $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);//id no parametro da url
 if ($id === false) {
-    header('Location: /index.php?sucesso=0');
+    header('Location: /?sucesso=0');
     exit();
 }
 
@@ -15,4 +15,4 @@ $statement->bindValue(1, $id);
 
 
 $statement->execute();
-header('Location: /index.php?sucesso=1');
+header('Location: /?sucesso=1');
