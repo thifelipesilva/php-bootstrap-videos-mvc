@@ -4,37 +4,16 @@ $dbPath = __DIR__ . '/banco.sqlite';
 $pdo = new PDO("sqlite:$dbPath");
 
 $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-if ($id !== false) {
+if ($id !== false && $id !== null) {
     $statement = $pdo->prepare('SELECT * FROM videos WHERE id = ?;');
     $statement->bindValue(1, $id, PDO::PARAM_INT);
     $statement->execute();
     $video = $statement->fetch(PDO::FETCH_ASSOC);
 }
 
-?><!DOCTYPE html>
-<html lang="pt-br">
+?>
+<?php require_once 'inicio-html.php'; ?>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>S-Play</title>
-</head>
-
-<body>
-
-    <!-- Cabecalho -->
-    <header>
-
-        <nav>
-            <h1><a href="/" >Sk8-Play</a></h1>
-            <div>
-                <a href="/novo-video">Add</a>
-                <a href="../pages/login.html">Sair</a>
-            </div>
-        </nav>
-
-    </header>
     <!-- Formulario -->
     <main>
     
@@ -68,6 +47,4 @@ if ($id !== false) {
 
     </main>
 
-</body>
-
-</html>
+<?php require_once 'fim-html.php'; ?>
