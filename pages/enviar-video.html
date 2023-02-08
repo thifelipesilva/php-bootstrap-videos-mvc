@@ -14,7 +14,7 @@
     <header>
 
         <nav>
-            <h1>S-Play</h1>
+            <h1><a href="/" >Sk8-Play</a></h1>
             <div>
                 <a href="./enviar-video.html">Add</a>
                 <a href="../pages/login.html">Sair</a>
@@ -28,14 +28,14 @@
         <form action="/novo-video.php" method="post">
             <h2>Envie um vídeo!</h3>
                 <div>
-                    <label for="url">Link embed</label>
-                    <input name="url" required placeholder="Por exemplo: https://www.youtube.com/embed/FAY1K2aUg5g" id='url' />
+                    <label for="linkVideo">Link embed</label>
+                    <input name="linkVideo" required placeholder="Por exemplo: https://www.youtube.com/embed/FAY1K2aUg5g" id='linkVideo' />
                 </div>
 
 
                 <div>
-                    <label for="titulo">Titulo do vídeo</label>
-                    <input name="titulo" required placeholder="Neste campo, dê o nome do vídeo" id="titulo"/>
+                    <label for="title">Titulo do vídeo</label>
+                    <input name="title" required placeholder="Neste campo, dê o nome do vídeo" id="title"/>
                 </div>
 
                 <input type="submit" value="Enviar" />
