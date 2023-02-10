@@ -13,9 +13,9 @@ class DeletaVideoController implements Controller
     public function processaRequisicao(): void
     {
         $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);//id no parametro da url
-        if ($id === false) {
+        if ($id === null || $id === false) {
             header('Location: /?sucesso=0');
-            exit();
+            return;
         }
 
         $sucess = $this->videoRepository->remove($id);
