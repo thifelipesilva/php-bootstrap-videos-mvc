@@ -7,10 +7,12 @@ use PDO;
 
 class VideoRepository 
 {
+    //PDO - injeção de dependência
     public function __construct(private PDO $pdo)
     {
     }
 
+    //metodo para adicionar um video
     public function add(Video $video): bool
     {
         $sql = 'INSERT INTO videos (linkVideo, title) VALUES (?, ?)';
@@ -26,7 +28,7 @@ class VideoRepository
         return $resultado;
     }
 
-
+    //metodo para remove um video
     public function remove(int $id): bool
     {
         $sql = 'DELETE FROM videos WHERE id = ?';
@@ -35,6 +37,7 @@ class VideoRepository
         return $stm->execute();
     }
 
+    //metodo para atualiza um video
     public function update(Video $video): bool
     {
         $sql = 'UPDATE videos SET linkVideo = :linkVideo, title = :title WHERE id = :id';
@@ -45,6 +48,7 @@ class VideoRepository
         return $stm->execute();
     }
     
+    //metodo para listar todos os videos
     /**
      * @return Video[]
      */
@@ -57,7 +61,7 @@ class VideoRepository
         ); 
     }
 
-
+    //encontrar um video por id
     public function find(int $id): Video
     {
         $stm = $this->pdo->prepare('SELECT * FROM videos WHERE id = ?;');
@@ -67,6 +71,7 @@ class VideoRepository
         return $this->hydrateVideo($stm->fetch(PDO::FETCH_ASSOC));
     }
 
+    //hidratar os dados
     private function hydrateVideo(array $videoData): Video
     {
         $video = new Video($videoData['linkVideo'], $videoData['title']);

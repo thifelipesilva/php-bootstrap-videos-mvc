@@ -15,6 +15,7 @@ class Video
         $this->setUrl($linkVideo);
     }
 
+    //funcao para tratar/setar a url
     private function setUrl(string $linkVideo): void
     {
         if (filter_var($linkVideo, FILTER_VALIDATE_URL) === false) {

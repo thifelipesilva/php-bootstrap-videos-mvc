@@ -20,7 +20,7 @@
                     <a href="/novo-video" class="nav-link">
                         + Videos
                     </a>
-                    <a href="/pages/login.html" class="nav-link">
+                    <a href="/logout" class="nav-link">
                         Sair
                     </a>
                 </div>

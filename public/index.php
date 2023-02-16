@@ -11,8 +11,18 @@ $videoRepository = new VideoRepository($pdo);
 
 $routes = require_once __DIR__ . '/../config/routes.php';
 
+
 $pathInfo = $_SERVER['PATH_INFO'] ?? '/';
 $httpMethod = $_SERVER['REQUEST_METHOD'];
+
+//autorização de login 
+session_start();//verifica se uma sessao foi criada, se nao cria uma sessao
+$isLoginRoute = $pathInfo === '/login';
+if (!array_key_exists('logado', $_SESSION) && !$isLoginRoute) {
+    header('Location: /login');
+    return;
+}
+
 
 $key = "$httpMethod|$pathInfo";
 if (array_key_exists($key, $routes)) {
