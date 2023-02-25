@@ -7,7 +7,7 @@ require_once __DIR__ . '/inicio-html.php';
 
 <main class="px-3">
 
-    <form method="post">
+    <form enctype="multipart/form-data" method="post">
         <h2 class="text-center text-secondary py-2">Envie um vídeo!</h2>
 
         <div class="form-group  py-2">
@@ -31,6 +31,17 @@ require_once __DIR__ . '/inicio-html.php';
              required 
              placeholder="Neste campo, dê o nome do vídeo" 
              id="title" 
+             class="form-control"
+            />
+        </div>
+
+        <div class="form-group py-2">
+            <label class="control-label" for="image_path">Imagem do vídeo</label>
+            <input
+             accept="image/*"
+             name="image_path" 
+             id="image_path"
+             type="file" 
              class="form-control"
             />
         </div>

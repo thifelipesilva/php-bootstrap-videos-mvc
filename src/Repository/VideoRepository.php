@@ -5,7 +5,7 @@ namespace APP\Sk8play\Repository;
 use APP\Sk8play\Entity\Video;
 use PDO;
 
-class VideoRepository 
+class VideoRepository
 {
     //PDO - injeção de dependência
     public function __construct(private PDO $pdo)
@@ -15,10 +15,11 @@ class VideoRepository
     //metodo para adicionar um video
     public function add(Video $video): bool
     {
-        $sql = 'INSERT INTO videos (linkVideo, title) VALUES (?, ?)';
+        $sql = 'INSERT INTO videos (linkVideo, title, image_path) VALUES (?, ?, ?)';
         $stm = $this->pdo->prepare($sql);
         $stm->bindValue(1, $video->linkVideo);
         $stm->bindValue(2, $video->title);
+        $stm->bindValue(3, $video->getFilePath());
 
         $resultado = $stm->execute();
 
@@ -40,25 +41,31 @@ class VideoRepository
     //metodo para atualiza um video
     public function update(Video $video): bool
     {
-        $sql = 'UPDATE videos SET linkVideo = :linkVideo, title = :title WHERE id = :id';
+        $updateImageSql = '';
+        if ($video->getFilePath() !== null) {
+            $updateImageSql = ', image_path = :image_path';
+        }
+        $sql = "UPDATE videos SET linkVideo = :linkVideo, title = :title $updateImageSql WHERE id = :id;";
         $stm = $this->pdo->prepare($sql);
         $stm->bindValue(':linkVideo', $video->linkVideo);
         $stm->bindValue(':title', $video->title);
         $stm->bindValue(':id', $video->id, PDO::PARAM_INT);
+
+        if ($video->getFilePath() !== null) {
+            $stm->bindValue(':image_path', $video->getFilePath());
+        }
+        
         return $stm->execute();
     }
-    
+
     //metodo para listar todos os videos
-    /**
-     * @return Video[]
-     */
     public function all(): array
     {
         $videoList = $this->pdo->query('SELECT * FROM videos;')->fetchAll(PDO::FETCH_ASSOC);
         return array_map(
-            $this->hydrateVideo(...),            
+            $this->hydrateVideo(...),
             $videoList
-        ); 
+        );
     }
 
     //encontrar um video por id
@@ -77,8 +84,10 @@ class VideoRepository
         $video = new Video($videoData['linkVideo'], $videoData['title']);
         $video->setId($videoData['id']);
 
+        if ($videoData['image_path'] !== null) {
+            $video->setFilePathh($videoData['image_path']);
+        }
+
         return $video;
     }
-
-    
 }

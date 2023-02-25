@@ -25,7 +25,19 @@ class NovoVideoController implements Controller
             exit(); 
         }
 
-        $sucess = $this->videoRepository->add(new Video($url, $titulo));
+        $video = new Video($url, $titulo);
+
+        //algum arquivo foi encontrado?
+        //processa o upload
+        //armazena o caminho no meu objeto video
+
+        if ($_FILES['image_path']['error'] === UPLOAD_ERR_OK) {
+            move_uploaded_file($_FILES['image_path']['tmp_name'], __DIR__ . '/../../public/img/uploads/' . $_FILES['image_path']['name']);
+            $video->setFilePathh($_FILES['image_path']['name']);
+        }
+
+
+        $sucess = $this->videoRepository->add($video);
 
         if ($sucess === false) {
             header('Location: /?sucesso=0');
