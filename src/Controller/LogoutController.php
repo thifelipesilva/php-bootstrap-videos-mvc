@@ -2,10 +2,18 @@
 
 namespace APP\Sk8play\Controller;
 
-class LogoutController implements Controller {
-    public function processaRequisicao(): void
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Nyholm\Psr7\Response;
+use Psr\Http\Server\RequestHandlerInterface;
+
+class LogoutController implements RequestHandlerInterface 
+{
+    public function handle(ServerRequestInterface $req): ResponseInterface
     {
         session_destroy();
-        header('Location: /login');
+        return new Response(302, [
+            'Location' => '/login'
+        ]);
     }
 }

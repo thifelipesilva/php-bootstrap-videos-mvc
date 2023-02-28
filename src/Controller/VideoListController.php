@@ -3,18 +3,25 @@
 namespace APP\Sk8play\Controller;
 
 use APP\Sk8play\Repository\VideoRepository;
+use League\Plates\Engine;
+use Nyholm\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
-class VideoListController implements Controller
+class VideoListController extends ControllerHTML
 {
     
 
-    public function __construct(private VideoRepository $videoRepository)
+    public function __construct(
+        private VideoRepository $videoRepository,
+        private Engine $template
+    )
     {
     }
 
-    public function processaRequisicao(): void
+    public function handle(ServerRequestInterface $req): ResponseInterface
     {   
         $videoList = $this->videoRepository->all();
-        require_once __DIR__ . '/../../views/list-video.php';
+        return new Response(200, body: $this->template->render('list-video', ['videoList' => $videoList])); 
     }
 }

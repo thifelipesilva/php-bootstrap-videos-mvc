@@ -3,38 +3,53 @@
 namespace APP\Sk8play\Controller;
 
 use APP\Sk8play\Entity\Video;
+use APP\Sk8play\Helpers\FlashMessageTrait;
 use APP\Sk8play\Repository\VideoRepository;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Nyholm\Psr7\Response;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class EditaVideoController implements Controller
+class EditaVideoController implements RequestHandlerInterface
 {
+    use FlashMessageTrait;
     public function __construct(private VideoRepository $videoRepository)
     {
     }
 
-    public function processaRequisicao(): void
+    public function handle(ServerRequestInterface $req): ResponseInterface
     {
+        $params = $req->getQueryParams();//funcao da interface ServerRequestInterface, devolve um array com os params da requisicao
 
-        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        $id = filter_var($params['id'], FILTER_VALIDATE_INT);
         if ($id === false || $id === null) {
-            header('Location: /?sucesso=0');
-            return;
+            $this->addErrorMessage('ID inválido');
+            return new Response(302, [
+                'Location' => '/'
+            ]);
         }
 
-        $url = filter_input(INPUT_POST, 'linkVideo', FILTER_VALIDATE_URL);
+        $url = filter_var($params['linkVideo'], FILTER_VALIDATE_URL);
         if ($url === false) {
-            header('Location: /?sucesso=0');
-            return;
+            $this->addErrorMessage('Url Inválida');
+            return new Response(302, [
+                'Location' => '/'
+            ]);
         }
-        $titulo = filter_input(INPUT_POST, 'title');
+
+        $titulo = filter_var($params['title']);
         if ($titulo === false) {
-            header('Location: /?sucesso=0');
-            return;
+            $this->addErrorMessage('Titulo Inválido');
+            return new Response(302, [
+                'Location' => '/'
+            ]);
         }
 
         $video = new Video($url, $titulo);
         $video->setId($id);
         
 
+        //movendo arquivo recebido para a pasta de destinho. Se não houver erro com a foto
         if ($_FILES['image_path']['error'] === UPLOAD_ERR_OK) {
             move_uploaded_file(
                 $_FILES['image_path']['tmp_name'],
@@ -46,9 +61,14 @@ class EditaVideoController implements Controller
         $success = $this->videoRepository->update($video);
 
         if ($success === false) {
-            header('Location: /?sucesso=0');
+            $this->addErrorMessage('Erro ao atualizar');
+            return new Response(302, [
+                'Location' => '/'
+            ]);
         } else {
-            header('Location: /?sucesso=1');
+            return new Response(302, [
+                'Location' => '/'
+            ]);
         }
     }
 }

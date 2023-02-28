@@ -1,7 +1,4 @@
-<?php
-require_once __DIR__ . '/inicio-html.php';
-?>
-
+<?php $this->layout('layout');?>
 <div class="px-3">
     <ul alt="videos" class="card-group list-unstyled gap-3">
         <?php foreach ($videoList as $video) : ?>
@@ -29,6 +26,7 @@ require_once __DIR__ . '/inicio-html.php';
                         <div>
                             <a href="./editar-video?id=<?= $video->id; ?>" class="btn btn-primary">Editar</a>
                             <a href="./remover-video?id=<?= $video->id; ?>" class="btn btn-danger">Excluir</a>
+                            <a href="./remover-capa?id=<?= $video->id; ?>" class="btn btn-secondary">remover capa</a>
                         </div>
                     </div>
                 </div>
@@ -37,4 +35,4 @@ require_once __DIR__ . '/inicio-html.php';
     </ul>
 </div>
 
-<?php require_once __DIR__ . '/fim-html.php';
+

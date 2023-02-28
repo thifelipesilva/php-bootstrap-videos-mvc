@@ -3,22 +3,31 @@
 namespace APP\Sk8play\Controller;
 
 use APP\Sk8play\Repository\VideoRepository;
+use League\Plates\Engine;
+use Nyholm\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
-class VideoFormController implements Controller
+class VideoFormController extends ControllerHTML
 {
-    public function __construct(private VideoRepository $videoRepository)
-    {
-    }
+    public function __construct(
+        private VideoRepository $videoRepository,
+        private Engine $template
+    ){}
+    
 
-    public function processaRequisicao(): void
+    public function handle(ServerRequestInterface $req): ResponseInterface
     {
-        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-        /** @var ?Video $video */
+        $params = $req->getQueryParams();
+        $id = filter_var($params['id'] ?? '', FILTER_VALIDATE_INT);
+
         $video = null;
+
         if ($id !== false && $id !== null) {
             $video = $this->videoRepository->find($id);
+            
         }
 
-        require_once __DIR__ . '/../../views/form-video.php';
+        return new Response(200, body: $this->template->render('form-video', ['id' => $id, 'video' => $video]));
     }
 }

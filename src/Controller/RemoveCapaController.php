@@ -2,38 +2,37 @@
 
 namespace APP\Sk8play\Controller;
 
+use APP\Sk8play\Helpers\FlashMessageTrait;
 use APP\Sk8play\Repository\VideoRepository;
+use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Nyholm\Psr7\Response;
-use APP\Sk8play\Helpers\FlashMessageTrait;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class DeletaVideoController implements RequestHandlerInterface
+class RemoveCapaController implements RequestHandlerInterface
 {
     use FlashMessageTrait;
-
     public function __construct(private VideoRepository $videoRepository)
-    {        
+    {
+        
     }
 
     public function handle(ServerRequestInterface $req): ResponseInterface
     {
-        //$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);//id no parametro da url antes de aplicar a psr
         $params = $req->getQueryParams();
-
         $id = filter_var($params['id'], FILTER_VALIDATE_INT);
-
-        if ($id === null || $id === false) {
-
-            $this->addErrorMessage('ID inválido');
+        if (is_null($id) || $id === false) {
+            $this->addErrorMessage('Id inválido');
             return new Response(302, [
                 'Location' => '/'
             ]);
-        }    
-        $sucess = $this->videoRepository->remove($id);
-        if ($sucess === false) {
-            $this->addErrorMessage('Erro ao remover video');
+            
+        }
+
+        $success = $this->videoRepository->removeImage($id);
+
+        if ($success === false) {
+            $this->addErrorMessage('A imagem não foi removida');
             return new Response(302, [
                 'Location' => '/'
             ]);
@@ -44,5 +43,3 @@ class DeletaVideoController implements RequestHandlerInterface
         }
     }
 }
-
-//named arguments | parâmetros nomeados

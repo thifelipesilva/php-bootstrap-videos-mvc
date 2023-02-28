@@ -78,7 +78,7 @@ class VideoRepository
         return $this->hydrateVideo($stm->fetch(PDO::FETCH_ASSOC));
     }
 
-    //hidratar os dados
+    //tratar os dados
     private function hydrateVideo(array $videoData): Video
     {
         $video = new Video($videoData['linkVideo'], $videoData['title']);
@@ -89,5 +89,15 @@ class VideoRepository
         }
 
         return $video;
+    }
+
+    //metodo para remover imagem
+    public function removeImage(int $id): bool
+    {
+        $sql = 'UPDATE videos SET image_path = NULL WHERE id = ?;';
+        $stm = $this->pdo->prepare($sql);
+        $stm->bindValue(1, $id);
+        $removeu = $stm->execute();
+        return $removeu;
     }
 }

@@ -2,10 +2,15 @@
 
 namespace APP\Sk8play\Controller;
 
-class Error404Controller implements Controller
+use Nyholm\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+
+class Error404Controller implements RequestHandlerInterface
 {
-    public function processaRequisicao(): void
-    {
-        http_response_code(404);
+    public function handle(ServerRequestInterface $req): ResponseInterface
+    {        
+        return new Response(404);
     }
 }

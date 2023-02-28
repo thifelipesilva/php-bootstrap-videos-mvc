@@ -1,13 +1,15 @@
-<?php
-
-require_once __DIR__ . '/inicio-html.php';
-
-/** @var \APP\Sk8play\Entity\Video|null $video */
-?>
+<?php $this->layout('layout');?>
 
 <main class="px-3">
-
     <form enctype="multipart/form-data" method="post">
+
+        <?php if (isset($_SESSION['error_message'])): ?>
+            <h2>
+                <?= $_SESSION['error_message']; ?>
+                <?php unset($_SESSION['error_message']); ?>
+            </h2>
+        <?php endif; ?>
+        
         <h2 class="text-center text-secondary py-2">Envie um vídeo!</h2>
 
         <div class="form-group  py-2">
@@ -52,4 +54,3 @@ require_once __DIR__ . '/inicio-html.php';
 
 </main>
 
-<?php require_once __DIR__ . '/fim-html.php';
